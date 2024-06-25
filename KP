@@ -1,0 +1,52 @@
+// Model - выполняет все расчеты
+public class CalculatorModel {
+    public double calculateExpression(String expression) {
+        // Здесь должен быть код для вычисления выражения
+        // В этом примере используется встроенный скриптовый движок JavaScript для выполнения вычислений
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+        try {
+            return (double) engine.eval(expression);
+        } catch (ScriptException e) {
+            e.printStackTrace();
+            return Double.NaN; // Возвращаем 'не число', если выражение некорректно
+        }
+    }
+}
+
+// View - отображает пользовательский интерфейс
+public class CalculatorView {
+    // Методы для отображения интерфейса и вывода результатов
+    public void printResult(double result) {
+        System.out.println("Результат вычисления: " + result);
+    }
+}
+
+// Controller - обрабатывает ввод пользователя и взаимодействует с моделью и представлением
+public class CalculatorController {
+    private CalculatorModel model;
+    private CalculatorView view;
+
+    public CalculatorController(CalculatorModel model, CalculatorView view) {
+        this.model = model;
+        this.view = view;
+    }
+
+    public void calculate(String expression) {
+        double result = model.calculateExpression(expression);
+        view.printResult(result);
+    }
+}
+
+// Main class - точка входа в программу
+public class MVCCalculator {
+    public static void main(String[] args) {
+        CalculatorModel model = new CalculatorModel();
+        CalculatorView view = new CalculatorView();
+        CalculatorController controller = new CalculatorController(model, view);
+
+        // Пример выражения для расчета
+        String expression = "(7+8*23/2.5)**23";
+        controller.calculate(expression);
+    }
+}
